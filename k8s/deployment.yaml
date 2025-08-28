@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saijavacode-deployment
+  labels:
+    app: saijavacode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: saijavacode
+  template:
+    metadata:
+      labels:
+        app: saijavacode
+    spec:
+      containers:
+        - name: saijavacode
+          image: indra25cloud/saijavacode:latest
+          ports:
+            - containerPort: 8080
