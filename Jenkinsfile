@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "indrasena23/samplejavacode:latest"
-        DOCKERHUB_CREDENTIALS = "dockerhub-credentials-id" // Replace with your Jenkins credentials ID
+        DOCKERHUB_CREDENTIALS = "dockerhub-creds" // Replace with your Jenkins credentials ID
     }
 
     stages {
@@ -31,7 +31,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                    docker.withRegistry('https://index.docker.io/v1/', dockerhub-creds) {
                         docker.image(DOCKER_IMAGE).push()
                     }
                 }
