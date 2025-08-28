@@ -5,7 +5,6 @@ pipeline {
         DOCKER_IMAGE = 'indrasena23/samplejavacode:latest'
         DOCKERHUB_CREDENTIALS = 'dockerhub-creds' // exact Jenkins credential ID
     }
-
     stages {
 
         stage('Checkout Code') {
@@ -43,6 +42,7 @@ pipeline {
             }
         }
 
+        /*
        // stage('Deploy to Kubernetes') {
            // steps {
                // echo 'Deploying to Kubernetes...'
@@ -50,7 +50,10 @@ pipeline {
                 // sh 'kubectl apply -f k8s/deployment.yaml'
             }
         }
+        
+        */
     }
+    
 
     post {
         success {
