@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo 'Checking out source code...'
-                git branch: 'main', url: 'https://github.com/yourusername/CICD-Project.git'
+                git branch: 'master', url: 'http://github.com/indra25cloud/SaiJavaCode.git'
             }
         }
 
