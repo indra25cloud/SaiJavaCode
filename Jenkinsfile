@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'indrasena23/samplejavacode:latest'
         DOCKERHUB_CREDENTIALS = 'dockerhub-creds' // exact Jenkins credential ID
+        KUBECONFIG_CREDENTIALS = 'kubeconfig-creds' // Jenkins credential ID for kubeconfig file
     }
 
     stages {
@@ -46,8 +47,14 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 echo 'Deploying to Kubernetes...'
-                // Uncomment & customize for your k8s deployment
-                // sh 'kubectl apply -f k8s/deployment.yaml'
+                script {
+                    // Use kubeconfig stored in Jenkins credentials
+                    withCredentials([file(credentialsId: KUBECONFIG_CREDENTIALS, variable: 'KUBECONFIG_FILE')]) {
+                        sh 'export KUBECONFIG=$KUBECONFIG_FILE'
+                        sh 'kubectl apply -f k8s/deployment.yaml'
+                        sh 'kubectl rollout status deployment/my-app-deployment'
+                    }
+                }
             }
         }
     }
