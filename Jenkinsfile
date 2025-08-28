@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')   // Jenkins credential ID
-    DOCKER_IMAGE = "indra25cloud/saijavacode:latest"         // Replace with your DockerHub username if different
+    DOCKER_IMAGE = "indrasena23/samplejavacode:latest"         // Replace with your DockerHub username if different
   }
 
   stages {
