@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Checkout Code') {
       steps {
-        git url: 'https://github.com/indra25cloud/SaiJavaCode.git', branch: 'main'
+        git url: 'https://github.com/indra25cloud/SaiJavaCode.git', branch: 'master'
       }
     }
 
