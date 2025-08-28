@@ -2,16 +2,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = 'dockerhub-creds'  // Exact Jenkins credentials ID
         DOCKER_IMAGE = 'indrasena23/samplejavacode:latest'
-        MAVEN_OPTS = '-Dmaven.test.skip=true'       // Skip tests if desired
+        DOCKERHUB_CREDENTIALS = 'dockerhub-creds' // exact Jenkins credential ID
     }
 
     stages {
 
         stage('Checkout Code') {
             steps {
-                echo 'Checking out source code from GitHub...'
+                echo 'Checking out source code...'
                 git branch: 'main', url: 'https://github.com/yourusername/CICD-Project.git'
             }
         }
@@ -19,7 +18,7 @@ pipeline {
         stage('Build Maven Projects') {
             steps {
                 echo 'Building Maven projects...'
-                sh 'mvn clean package'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
@@ -47,7 +46,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 echo 'Deploying to Kubernetes...'
-                // Uncomment and customize below for your deployment
+                // Uncomment & customize for your k8s deployment
                 // sh 'kubectl apply -f k8s/deployment.yaml'
             }
         }
@@ -58,7 +57,7 @@ pipeline {
             echo 'Pipeline completed successfully!'
         }
         failure {
-            echo 'Pipeline failed. Check the logs for errors.'
+            echo 'Pipeline failed! Check the logs.'
         }
     }
 }
