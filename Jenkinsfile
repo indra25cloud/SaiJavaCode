@@ -2,25 +2,30 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "indrasena23/samplejavacode:latest"
-        DOCKERHUB_CREDENTIALS = "dockerhub-creds" // Replace with your Jenkins credentials ID
+        DOCKERHUB_CREDENTIALS = 'dockerhub-creds'  // Exact Jenkins credentials ID
+        DOCKER_IMAGE = 'indrasena23/samplejavacode:latest'
+        MAVEN_OPTS = '-Dmaven.test.skip=true'       // Skip tests if desired
     }
 
     stages {
+
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/indra25cloud/SaiJavaCode.git', branch: 'master'
+                echo 'Checking out source code from GitHub...'
+                git branch: 'main', url: 'https://github.com/yourusername/CICD-Project.git'
             }
         }
 
-        stage('Build with Maven') {
+        stage('Build Maven Projects') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                echo 'Building Maven projects...'
+                sh 'mvn clean package'
             }
         }
 
         stage('Build Docker Image') {
             steps {
+                echo "Building Docker image ${DOCKER_IMAGE}..."
                 sh 'cp webapp/target/webapp.war .'
                 script {
                     docker.build(DOCKER_IMAGE)
@@ -30,8 +35,9 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
+                echo "Pushing Docker image ${DOCKER_IMAGE} to DockerHub..."
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', dockerhub-creds) {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
                         docker.image(DOCKER_IMAGE).push()
                     }
                 }
@@ -40,7 +46,9 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                echo "Deploy to Kubernetes stage - Add your kubectl commands here"
+                echo 'Deploying to Kubernetes...'
+                // Uncomment and customize below for your deployment
+                // sh 'kubectl apply -f k8s/deployment.yaml'
             }
         }
     }
@@ -50,7 +58,7 @@ pipeline {
             echo 'Pipeline completed successfully!'
         }
         failure {
-            echo 'Pipeline failed. Check logs for details.'
+            echo 'Pipeline failed. Check the logs for errors.'
         }
     }
 }
